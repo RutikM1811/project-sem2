@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat History</title>
+</head>
+<body>
+    <h2>Chat History for {{ username }}</h2>
+    <ul>
+        {% for chat in history %}
+            <li><strong>You:</strong> {{ chat.message }}<br><strong>Bot:</strong> {{ chat.response }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('home') }}">Back to Home</a>
+</body>
+</html>

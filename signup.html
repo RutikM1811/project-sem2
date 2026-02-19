@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register Form</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #3a3aee, #1f1f3b);
+            color: white;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .left {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .left img {
+            width: 80%;
+            max-width: 400px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+
+        .right {
+            flex: 1;
+            background-color: #15172b;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            background-color: #2a2a40;
+            color: white;
+        }
+
+        .checkbox {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .checkbox input {
+            margin-right: 10px;
+        }
+
+        .btn {
+            width: 100%;
+            background-color: #4d8aff;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #3a6edc;
+        }
+
+        .text-center {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .social {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .social button {
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            background-color: #eee;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .terms {
+            font-size: 12px;
+            margin-top: 10px;
+            color: #aaa;
+        }
+
+        .error {
+            color: #ff4d4d;
+            font-size: 13px;
+            margin-top: -15px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="left">
+        <img src="/static/robot.png" alt="Bot">
+    </div>
+    <div class="right">
+        <h2>Welcome to Sign Up <span style="color: #4d8aff;">Buddy!</span></h2>
+        <form id="registerForm" method="POST" action="/signup">
+            <div class="form-group">
+                <label for="name">Enter your name</label>
+                <input type="text" id="name" name="name" placeholder="">
+                <div id="nameError" class="error"></div>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="example@email.com">
+                <div id="emailError" class="error"></div>
+            </div>
+            <div class="form-group">
+                <label for="password">Enter your password</label>
+               <input type="password" id="password" name="password" placeholder="••••••••">
+
+                <div id="passwordError" class="error"></div>
+            </div>
+            <div class="checkbox">
+              <input type="checkbox" id="agree" name="agree">
+                <label for="agree">I agree to <a href="#" style="color: #4d8aff;">Terms of Conditions</a> and <a href="#" style="color: #4d8aff;">Privacy of Policy</a></label>
+            </div>
+            <div id="agreeError" class="error"></div>
+            <button type="submit" class="btn">Sign Up</button>
+
+            <div class="text-center">
+                Already have an account? <a href="#" style="color: #4d8aff;">Sign In</a>
+            </div>
+
+            <div class="social">
+                <button>Google</button>
+                <button>Facebook</button>
+            </div>
+
+            <div class="terms text-center">
+                Terms of Service | Privacy Policy
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const form = document.getElementById('registerForm');
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Clear previous errors
+        document.getElementById('nameError').innerText = '';
+        document.getElementById('emailError').innerText = '';
+        document.getElementById('passwordError').innerText = '';
+        document.getElementById('agreeError').innerText = '';
+
+        let valid = true;
+
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const agree = document.getElementById('agree').checked;
+
+        // Name validation
+        if (name === '') {
+            document.getElementById('nameError').innerText = 'Name is required.';
+            valid = false;
+        }
+
+        // Email validation
+        if (email === '') {
+            document.getElementById('emailError').innerText = 'Email is required.';
+            valid = false;
+        } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+            document.getElementById('emailError').innerText = 'Enter a valid email.';
+            valid = false;
+        }
+
+        // Password validation
+        if (password.length < 6) {
+            document.getElementById('passwordError').innerText = 'Password must be at least 6 characters.';
+            valid = false;
+        }
+
+        // Terms checkbox
+        if (!agree) {
+            document.getElementById('agreeError').innerText = 'You must agree to terms.';
+            valid = false;
+        }
+
+        if (valid) {
+            alert('Form submitted successfully!');
+            form.submit(); // optionally allow the form to proceed or handle it via AJAX
+        }
+    });
+</script>
+
+</body>
+</html>
